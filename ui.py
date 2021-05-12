@@ -8,10 +8,10 @@ st.title("Solucionador de EDOs")
 func = st.text_input(
     label="Introduzca la EDO")
 
-n = int(st.number_input("n"))
-h = st.number_input("h")
-x0 = st.number_input("Valor Inicial de x")
-y0 = st.number_input("Valor Inicial de y")
+n = st.number_input("n", format="%d", value=1, min_value=1)
+h = st.number_input("h", format='%.3f', min_value=0.0)
+x0 = st.number_input("Valor Inicial de x", format='%.4f')
+y0 = st.number_input("Valor Inicial de y", format='%.4f')
 exact_solution = st.text_input("Solución exacta")
 
 exact_solution = exact_solution.replace('^', '**')
