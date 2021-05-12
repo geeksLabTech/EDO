@@ -5,7 +5,7 @@ import numpy as np
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 
 class NumericalOdeSolver:
-    def __init__(self, function:str, exact_solution:Optional[str]=None, h=0.1, n=10, x0=0, y0=1):
+    def __init__(self, function:str, exact_solution:Optional[str]=None, h=0.1, n:int=10, x0=0.0, y0=1.0):
       self.f = function
       self.exact_solution = exact_solution
       self.h = h
