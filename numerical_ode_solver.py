@@ -4,6 +4,7 @@ from typing import Optional
 import numpy as np
 from sympy.parsing.sympy_parser import parse_expr, standard_transformations, implicit_multiplication_application
 import math
+import time
 
 class NumericalOdeSolver:
     def __init__(self, function:str, exact_solution:Optional[str]=None, h=0.1, n:int=10, x0=0.0, y0=1.0):
@@ -86,10 +87,35 @@ class NumericalOdeSolver:
     
     
     def solve(self):
+        start = time.perf_counter()
         s1 = self.implicit_euler()
+        euler_time = time.perf_counter() - start
+        
+        start = time.perf_counter()
         s2 = self.improved_euler()
+        improved_euler_time = time.perf_counter() - start
+        
+        start = time.perf_counter()
         s3 = self.rk4()
-        solutions = {"Xn": s1[0], "Euler": s1[1], "Euler Mejorado": s2[1], "RK4": s3[1]}
+        rk4_time = time.perf_counter() - start
+        
+        solutions = {
+            "Xn": s1[0], 
+            "Euler": s1[1], 
+            "Euler Mejorado": s2[1], 
+            "RK4": s3[1], 
+            "Valor Real":'', 
+            "Error Absoluto Euler":'', 
+            "Error Absoluto Euler Mejorado":'', 
+            "Error Absoluto RK4":'', 
+            }
+
+        performance = {}
+        
+        performance["Tiempo de Ejecución Euler"] = [euler_time]
+        performance["Tiempo de Ejecución Euler Mejorado"] = [improved_euler_time]
+        performance["Tiempo de Ejecución Runge-Kutta"] = [rk4_time]
+        
         if self.exact_solution is not None:
             s4 = self.solve_with_exact_solution(s1[0])
             solutions["Valor Real"] = s4
@@ -97,6 +123,6 @@ class NumericalOdeSolver:
             solutions["Error Absoluto Euler Mejorado"] = self.absolute_error(s1[1], s4)
             solutions["Error Absoluto RK4"] = self.absolute_error(s1[1], s4)
 
-        return solutions
+        return solutions,performance
     
     
